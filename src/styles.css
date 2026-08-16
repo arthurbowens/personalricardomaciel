@@ -1,3 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+@theme {
+  --font-display: "Bebas Neue", sans-serif;
+  --font-sans: "Outfit", sans-serif;
+  --color-ink: #070707;
+  --color-ink-soft: #111111;
+  --color-crimson: #e11d2e;
+  --color-crimson-deep: #9a0f1c;
+  --color-crimson-glow: #ff2a3d;
+  --color-snow: #f7f7f7;
+  --color-muted: #a3a3a3;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-snow);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-crimson) 70%, black);
+  color: white;
+}
