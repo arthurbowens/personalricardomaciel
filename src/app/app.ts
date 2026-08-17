@@ -123,6 +123,13 @@ export class App {
       label: 'Resultado 21',
       detail: '',
     },
+    {
+      id: 22,
+      src: '/resultado22.jpeg',
+      alt: 'Resultado 22: transformação em 5 meses',
+      label: 'Resultado 22 · 5 meses',
+      detail: '',
+    },
   ];
 
   protected readonly onlineRegions = [
