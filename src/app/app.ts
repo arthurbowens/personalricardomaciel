@@ -176,9 +176,9 @@ export class App {
     },
     {
       id: 'antes-resultado',
-      eyebrow: 'Mesma aluna',
-      title: '1 mês e 5 dias de transformação',
-      lead: 'Do pedido pra guardar as fotos “no fundo do baú” até o feedback no WhatsApp e as fotos do resultado.',
+      eyebrow: 'Mesma aluna · 90 dias',
+      title: '90 dias de transformação',
+      lead: 'Do pedido pra guardar as fotos “no fundo do baú” até o feedback no WhatsApp e as fotos do resultado em 90 dias.',
       slides: [
         {
           src: '/depoimento17.jpeg',
@@ -187,7 +187,7 @@ export class App {
         },
         {
           src: '/feedback1.jpeg',
-          alt: 'Print de WhatsApp: aluna agradece o incentivo e diz que o resultado foi em 1 mês e 5 dias',
+          alt: 'Print de WhatsApp: aluna agradece o incentivo e compartilha o feedback da transformação',
           caption: 'Mensagem no WhatsApp',
         },
         {
@@ -202,8 +202,8 @@ export class App {
         },
         {
           src: '/resultado19.jpeg',
-          alt: 'Antes e depois em perfil da mesma aluna',
-          caption: 'Antes e depois · perfil',
+          alt: 'Antes e depois em perfil da mesma aluna em 90 dias',
+          caption: 'Foram 90 dias',
         },
       ],
     },
