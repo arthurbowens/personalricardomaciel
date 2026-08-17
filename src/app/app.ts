@@ -109,6 +109,20 @@ export class App {
       label: 'Resultado 19',
       detail: '',
     },
+    {
+      id: 20,
+      src: '/resultado20.jpeg',
+      alt: 'Resultado 20: antes e depois de aluna do Team Ricardo Maciel',
+      label: 'Resultado 20',
+      detail: '',
+    },
+    {
+      id: 21,
+      src: '/resultado21.jpeg',
+      alt: 'Resultado 21: antes e depois de aluno do Team Ricardo Maciel',
+      label: 'Resultado 21',
+      detail: '',
+    },
   ];
 
   protected readonly onlineRegions = [
