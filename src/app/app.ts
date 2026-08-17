@@ -96,13 +96,14 @@ export class App {
       detail: '10 meses · -27,6 kg · +1,7 kg massa magra · -22,1% gordura',
     },
     { id: 17, src: '/resultado17.jpeg', alt: 'Transformação em 70 dias', detail: '70 dias' },
-    { id: 19, src: '/resultado19.jpeg', alt: 'Antes e depois de aluna', detail: '' },
+    { id: 19, src: '/resultado19.jpeg', alt: 'Transformação em 90 dias', detail: 'Foram 90 dias' },
     { id: 21, src: '/resultado21.jpeg', alt: 'Antes e depois de aluno', detail: '' },
     { id: 22, src: '/resultado22.jpeg', alt: 'Transformação em 5 meses', detail: '5 meses' },
     { id: 23, src: '/resultado23.jpeg', alt: 'Evolução da Geisielly em 90 dias', detail: '90 dias' },
     { id: 24, src: '/resultado24.jpeg', alt: 'Antes e depois de aluna', detail: '' },
     { id: 25, src: '/resultado25.jpeg', alt: 'Antes e depois de aluna', detail: '' },
     { id: 26, src: '/resultado26.jpeg', alt: 'Antes e depois de aluno', detail: '' },
+    { id: 27, src: '/resultado27.jpeg', alt: 'Transformação da Jessica em 69 dias', detail: '69 dias' },
   ];
 
   protected readonly onlineRegions = [
@@ -272,6 +273,29 @@ export class App {
           src: '/depoimento9.jpeg',
           alt: 'Depoimento da Juh: processo gigantesco mentalmente e se sente outra pessoa',
           caption: 'Processo mental e resultado',
+        },
+      ],
+    },
+    {
+      id: 'jessica',
+      eyebrow: 'Jessica · 69 dias',
+      title: 'Antes e depois da Jessica',
+      lead: 'Resultado em 69 dias, com os prints dela: perdeu gordura, manteve músculo e saiu do GG para o M.',
+      slides: [
+        {
+          src: '/resultado27.jpeg',
+          alt: 'Antes e depois da Jessica em 69 dias',
+          caption: '69 dias',
+        },
+        {
+          src: '/depoimentojessica.jpeg',
+          alt: 'Depoimento da Jessica: perdeu gordura, manteve músculo e saiu do GG para o M',
+          caption: 'GG para M',
+        },
+        {
+          src: '/depoimentojessica1.jpeg',
+          alt: 'Depoimento da Jessica: passou a gostar do que vê no espelho e a vestir o que gosta',
+          caption: 'Confiança no processo',
         },
       ],
     },
