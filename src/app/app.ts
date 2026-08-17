@@ -73,11 +73,43 @@ export class App {
     },
   ] as const;
 
-  protected readonly transformations = Array.from({ length: 13 }, (_, i) => ({
-    id: i + 1,
-    src: `/resultado${i + 1}.jpeg`,
-    alt: `Resultado ${i + 1} de transformação com Ricardo Maciel`,
-  }));
+  protected readonly transformations = [
+    ...Array.from({ length: 15 }, (_, i) => ({
+      id: i + 1,
+      src: `/resultado${i + 1}.jpeg`,
+      alt: `Resultado ${i + 1} de transformação com Ricardo Maciel`,
+      label: `Resultado ${i + 1}`,
+      detail: '',
+    })),
+    {
+      id: 16,
+      src: '/resultado16.jpeg',
+      alt: 'Resultado 16: 10 meses, menos 27,6 kg na balança, mais 1,7 kg de massa magra e menos 22,1% de gordura corporal',
+      label: 'Resultado 16 · 10 meses',
+      detail: '-27,6 kg · +1,7 kg massa magra · -22,1% gordura',
+    },
+    {
+      id: 17,
+      src: '/resultado17.jpeg',
+      alt: 'Resultado 17: transformação em 70 dias',
+      label: 'Resultado 17 · 70 dias',
+      detail: '',
+    },
+    {
+      id: 18,
+      src: '/resultado18.jpeg',
+      alt: 'Resultado 18: transformação em 1 ano e 6 meses',
+      label: 'Resultado 18 · 1 ano e 6 meses',
+      detail: '',
+    },
+    {
+      id: 19,
+      src: '/resultado19.jpeg',
+      alt: 'Resultado 19: antes e depois da aluna do feedback no WhatsApp',
+      label: 'Resultado 19',
+      detail: '',
+    },
+  ];
 
   protected readonly onlineRegions = [
     'Brasília',
@@ -118,6 +150,135 @@ export class App {
     { name: 'Bimestral', detail: 'Ritmo e acompanhamento contínuo' },
     { name: 'Trimestral', detail: 'Evolução com mais consistência' },
     { name: 'Anual', detail: 'Compromisso total com a transformação' },
+  ] as const;
+
+  /** Um carrossel por pessoa. Prints da mesma aluna ficam juntos. */
+  protected readonly depoimentoCarousels = [
+    {
+      id: 'suellen',
+      eyebrow: 'Suellen · fotos e medidas',
+      title: 'Evolução da Suellen',
+      lead: 'Foto com o Ricardo e os comparativos de medidas e bioimpedância dela.',
+      slides: [
+        {
+          src: '/suellen.jpeg',
+          alt: 'Suellen com o personal Ricardo Maciel na academia',
+          caption: 'Suellen · aluna',
+        },
+        {
+          src: '/feedbacktamanhos.jpeg',
+          alt: 'Tabela de medidas da Suellen: baseline 27/03 e evolução em 28/07',
+          caption: 'Medidas · 27/03 a 28/07',
+        },
+        {
+          src: '/feedbacktamanhos1.jpeg',
+          alt: 'Comparativo de bioimpedância da Suellen de maio a agosto',
+          caption: 'Bioimpedância · maio a agosto',
+        },
+      ],
+    },
+    {
+      id: 'antes-resultado',
+      eyebrow: 'Mesma aluna',
+      title: '1 mês e 5 dias de transformação',
+      lead: 'Do pedido pra guardar as fotos “no fundo do baú” até o feedback no WhatsApp e as fotos do resultado.',
+      slides: [
+        {
+          src: '/depoimento17.jpeg',
+          alt: 'Print do início: aluna pede para guardar as fotos e quer estar magra no aniversário em julho',
+          caption: 'Início · meta do aniversário',
+        },
+        {
+          src: '/feedback1.jpeg',
+          alt: 'Print de WhatsApp: aluna agradece o incentivo e diz que o resultado foi em 1 mês e 5 dias',
+          caption: 'Mensagem no WhatsApp',
+        },
+        {
+          src: '/resultadofeedback1.jpeg',
+          alt: 'Antes e depois da aluna que enviou o feedback no WhatsApp',
+          caption: 'Antes e depois',
+        },
+        {
+          src: '/resultado2feedback1.jpeg',
+          alt: 'Foto de resultado da mesma aluna do feedback no WhatsApp',
+          caption: 'Resultado',
+        },
+        {
+          src: '/resultado19.jpeg',
+          alt: 'Antes e depois em perfil da mesma aluna',
+          caption: 'Antes e depois · perfil',
+        },
+      ],
+    },
+    {
+      id: 'online-6kg',
+      eyebrow: 'Mesma aluna · online',
+      title: '6 kg em 1 mês',
+      lead: 'Conversa contínua: saiu de 94 kg para 88 kg, confia de olhos fechados e diz que já fez personal online antes, mas sem esse suporte e esses resultados.',
+      slides: [
+        {
+          src: '/depoimento.jpeg',
+          alt: 'Depoimento: aluna saiu de 94 kg para 88 kg em 1 mês e está feliz com os resultados',
+          caption: '94 kg a 88 kg · 6 kg em 1 mês',
+        },
+        {
+          src: '/depoimento1.jpeg',
+          alt: 'Depoimento: aluna diz que o suporte e os resultados online superaram outros personais',
+          caption: 'Suporte e resultados de verdade',
+        },
+        {
+          src: '/depoimento3.jpeg',
+          alt: 'Depoimento: continuidade da conversa sobre evolução e metas',
+          caption: 'Evolução e metas',
+        },
+        {
+          src: '/depoimento4.jpeg',
+          alt: 'Depoimento: aluna fala em treinar presencial e receber estratégias de corrida',
+          caption: 'Presencial e corrida',
+        },
+        {
+          src: '/depoimento5.jpeg',
+          alt: 'Depoimento: início do segundo mês com parabéns pelos resultados',
+          caption: 'Segundo mês de resultados',
+        },
+        {
+          src: '/depoimento6.jpeg',
+          alt: 'Depoimento: aluna curte os treinos e o jeito direto do acompanhamento',
+          caption: 'Treinos e acompanhamento',
+        },
+      ],
+    },
+    {
+      id: 'sem-tomar-nada',
+      eyebrow: 'Outra aluna',
+      title: 'Resultados sem tomar nada',
+      lead: 'Print separado: ela conta que não toma nada e que os resultados estão vindo.',
+      slides: [
+        {
+          src: '/depoimento2.jpeg',
+          alt: 'Depoimento: aluna agradece e diz que os resultados estão vindo sem tomar nada',
+          caption: 'Resultados sem tomar nada',
+        },
+      ],
+    },
+    {
+      id: 'juh',
+      eyebrow: 'Juh · mesma conversa',
+      title: 'Processo mental e resultado',
+      lead: 'O treino fez muita diferença, o processo foi gigantesco (principalmente mental) e hoje ela se sente outra pessoa.',
+      slides: [
+        {
+          src: '/depoimento8.jpeg',
+          alt: 'Depoimento da Juh: treino faz muita diferença e ela vai mandar antes e depois',
+          caption: 'Treino faz diferença',
+        },
+        {
+          src: '/depoimento9.jpeg',
+          alt: 'Depoimento da Juh: processo gigantesco mentalmente e se sente outra pessoa',
+          caption: 'Processo mental e resultado',
+        },
+      ],
+    },
   ] as const;
 
   @HostListener('window:scroll')

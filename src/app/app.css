@@ -716,10 +716,18 @@
   pointer-events: none;
 }
 
-.result-badge {
+.result-meta {
   position: absolute;
   left: 0.85rem;
+  right: 0.85rem;
   bottom: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.result-badge {
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
   background: color-mix(in srgb, black 72%, transparent);
@@ -730,6 +738,19 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: white;
+}
+
+.result-detail {
+  max-width: 100%;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, black 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--crimson) 45%, transparent);
+  backdrop-filter: blur(8px);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: color-mix(in srgb, white 90%, transparent);
 }
 
 .results-controls {
@@ -810,6 +831,255 @@
 
   .result-slide {
     flex: 0 0 min(42%, 26rem);
+  }
+}
+
+/* Feedback / depoimento */
+.feedback {
+  position: relative;
+  padding: 5.5rem 1.25rem;
+  background:
+    radial-gradient(ellipse 55% 60% at 85% 20%, color-mix(in srgb, var(--crimson) 18%, transparent), transparent 70%),
+    #0a0a0a;
+  border-block: 1px solid color-mix(in srgb, white 8%, transparent);
+}
+
+.feedback-inner {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.feedback-case {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid color-mix(in srgb, white 10%, transparent);
+}
+
+.feedback-case:first-of-type {
+  margin-top: 2.25rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.feedback-case-head {
+  margin-bottom: 1.5rem;
+}
+
+.feedback-case-title {
+  margin: 0.35rem 0 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.feedback-case-lead {
+  margin: 0.75rem 0 0;
+  max-width: 36rem;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: color-mix(in srgb, white 68%, transparent);
+}
+
+.feedback-story {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.feedback-portrait {
+  margin: 0;
+}
+
+.feedback-portrait img {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+  object-fit: contain;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, white 12%, transparent);
+  background: #111;
+}
+
+.feedback-portrait figcaption,
+.feedback-media figcaption,
+.feedback-trio figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, white 48%, transparent);
+}
+
+.feedback-quote {
+  margin: 0;
+  max-width: 48rem;
+  padding: 0;
+  border: 0;
+}
+
+.feedback-quote--solo {
+  margin-top: 1.25rem;
+  max-width: 48rem;
+}
+
+.feedback-said {
+  margin: 0 0 1rem !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--crimson) !important;
+}
+
+.feedback-quote p {
+  margin: 0 0 1.1rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: color-mix(in srgb, white 82%, transparent);
+}
+
+.feedback-quote p:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.feedback-quote footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.feedback-quote strong {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.45rem;
+  letter-spacing: 0.06em;
+  font-weight: 400;
+  color: white;
+}
+
+.feedback-quote span {
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, white 48%, transparent);
+}
+
+.feedback-media,
+.feedback-trio {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.feedback-media figure,
+.feedback-trio figure {
+  margin: 0;
+}
+
+.feedback-media img,
+.feedback-trio img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in srgb, white 10%, transparent);
+  background: #111;
+  object-fit: contain;
+}
+
+.feedback-media img {
+  background: white;
+}
+
+@media (min-width: 900px) {
+  .feedback-story {
+    grid-template-columns: minmax(14rem, 22rem) 1fr;
+    gap: 2.5rem;
+  }
+
+  .feedback-portrait img {
+    max-width: none;
+  }
+
+  .feedback-media {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .feedback-trio {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+  }
+
+  .feedback-trio--four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.depo-gallery {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  padding-bottom: 0.35rem;
+}
+
+.depo-shot {
+  flex: 0 0 min(78%, 20rem);
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.depo-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in srgb, white 10%, transparent);
+  background: #111;
+  object-fit: contain;
+}
+
+.depo-shot figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, white 48%, transparent);
+}
+
+.depo-video-wrap {
+  margin-top: 1.5rem;
+  max-width: 28rem;
+}
+
+.depo-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in srgb, white 10%, transparent);
+  background: #000;
+}
+
+@media (min-width: 900px) {
+  .depo-shot {
+    flex: 0 0 min(32%, 22rem);
+  }
+
+  .depo-video-wrap {
+    max-width: 22rem;
   }
 }
 

@@ -12,6 +12,7 @@
         <a href="#especialidades">Especialidades</a>
         <a href="#sobre">Sobre</a>
         <a href="#resultados">Resultados</a>
+        <a href="#depoimentos">Depoimentos</a>
         <a href="#atendimento">Atendimento</a>
         <a href="#planos">Planos</a>
         <div class="nav-social">
@@ -62,6 +63,7 @@
         <a href="#especialidades" (click)="closeMenu()">Especialidades</a>
         <a href="#sobre" (click)="closeMenu()">Sobre</a>
         <a href="#resultados" (click)="closeMenu()">Resultados</a>
+        <a href="#depoimentos" (click)="closeMenu()">Depoimentos</a>
         <a href="#atendimento" (click)="closeMenu()">Atendimento</a>
         <a href="#planos" (click)="closeMenu()">Planos</a>
         <a
@@ -357,7 +359,12 @@
                 loading="lazy"
                 decoding="async"
               />
-              <span class="result-badge">Resultado {{ photo.id }}</span>
+              <div class="result-meta">
+                <span class="result-badge">{{ photo.label }}</span>
+                @if (photo.detail) {
+                  <span class="result-detail">{{ photo.detail }}</span>
+                }
+              </div>
             </article>
           }
         </div>
@@ -415,6 +422,95 @@
         </div>
 
         <p class="results-counter">{{ resultIndex() + 1 }} / {{ transformations.length }}</p>
+      </div>
+    </section>
+
+    <section class="feedback" id="depoimentos">
+      <div class="feedback-inner">
+        <p class="section-label">Nas palavras delas</p>
+        <h2 class="section-title">Depoimentos reais</h2>
+        <p class="section-lead">
+          Cada carrossel é de uma aluna. Deslize para ver os prints e fotos da mesma pessoa.
+        </p>
+
+        <article class="feedback-case">
+          <div class="feedback-case-head">
+            <p class="feedback-said">Suellen · ela mesma escreveu</p>
+            <h3 class="feedback-case-title">Depoimento da Suellen</h3>
+          </div>
+          <blockquote class="feedback-quote feedback-quote--solo">
+            <p>
+              “Minhas medidas!!! Agora vou acelerar pra tentar mais 6 kg nesses próximos 4
+              meses!!!! Eu não tenho interesse em ser nenhuma musa fitness, até pq seriam muitos
+              sacrifícios!! Mas durante esse tempo o seu acompanhamento me fez não desistir!
+              Entendendo meu processo e minha realidade, exigindo de mim, mas sempre respeitando
+              meus limites e meus dias difíceis.. A rotina puxada, as crises de ansiedade, o
+              engorda e emagrece, a compulsão alimentar não controlada!”
+            </p>
+            <p>
+              “Agora vamos pra segunda fase, mais 4 meses de luta pra alcançar mais um degrau
+              nesse objetivo final que é viver mais com mais saúde e qualidade de vida!!! Só uma
+              mulher comum, vivendo uma vida comum.”
+            </p>
+            <footer>
+              <strong>Suellen</strong>
+              <span>Palavras dela · aluna</span>
+            </footer>
+          </blockquote>
+        </article>
+
+        @for (carousel of depoimentoCarousels; track carousel.id) {
+          <article class="feedback-case">
+            <div class="feedback-case-head">
+              <p class="feedback-said">{{ carousel.eyebrow }}</p>
+              <h3 class="feedback-case-title">{{ carousel.title }}</h3>
+              <p class="feedback-case-lead">{{ carousel.lead }}</p>
+            </div>
+
+            <div
+              class="depo-gallery"
+              role="region"
+              [attr.aria-label]="'Carrossel: ' + carousel.title"
+            >
+              @for (shot of carousel.slides; track shot.src) {
+                <figure class="depo-shot">
+                  <img
+                    [src]="shot.src"
+                    [alt]="shot.alt"
+                    width="720"
+                    height="1280"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption>{{ shot.caption }}</figcaption>
+                </figure>
+              }
+            </div>
+          </article>
+        }
+
+        <article class="feedback-case">
+          <div class="feedback-case-head">
+            <p class="feedback-said">Outra aluna · vídeo</p>
+            <h3 class="feedback-case-title">Depoimento em vídeo</h3>
+            <p class="feedback-case-lead">
+              Vídeo enviado por outra aluna contando a experiência com o acompanhamento.
+            </p>
+          </div>
+
+          <div class="depo-video-wrap">
+            <video
+              class="depo-video"
+              controls
+              playsinline
+              preload="metadata"
+              aria-label="Vídeo de depoimento da aluna"
+            >
+              <source src="/depoimento7.mp4" type="video/mp4" />
+              Seu navegador não reproduz vídeo MP4.
+            </video>
+          </div>
+        </article>
       </div>
     </section>
 
