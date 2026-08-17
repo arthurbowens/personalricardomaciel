@@ -676,7 +676,6 @@
   scroll-snap-type: x mandatory;
   scroll-padding-inline: 0;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
   cursor: grab;
@@ -1028,7 +1027,6 @@
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
   padding-bottom: 0.35rem;
