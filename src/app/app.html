@@ -346,10 +346,10 @@
           aria-label="Fotos de resultados em carrossel"
           (scroll)="onResultsScroll($event)"
         >
-          @for (photo of transformations; track photo.id; let i = $index) {
+          @for (photo of transformations; track photo.src; let i = $index) {
             <article
               class="result-slide result-slide--photo"
-              [attr.aria-label]="'Resultado ' + photo.id + ' de ' + transformations.length"
+              [attr.aria-label]="'Foto ' + (i + 1) + ' de ' + transformations.length"
             >
               <img
                 [src]="photo.src"
@@ -359,12 +359,11 @@
                 loading="lazy"
                 decoding="async"
               />
-              <div class="result-meta">
-                <span class="result-badge">{{ photo.label }}</span>
-                @if (photo.detail) {
+              @if (photo.detail) {
+                <div class="result-meta">
                   <span class="result-detail">{{ photo.detail }}</span>
-                }
-              </div>
+                </div>
+              }
             </article>
           }
         </div>
@@ -389,14 +388,14 @@
           </button>
 
           <div class="results-dots" role="tablist" aria-label="Navegação das fotos">
-            @for (photo of transformations; track photo.id; let i = $index) {
+            @for (photo of transformations; track photo.src; let i = $index) {
               <button
                 type="button"
                 class="results-dot"
                 role="tab"
                 [class.is-active]="resultIndex() === i"
                 [attr.aria-selected]="resultIndex() === i"
-                [attr.aria-label]="'Ir para resultado ' + photo.id"
+                [attr.aria-label]="'Ir para foto ' + (i + 1)"
                 (click)="goToResult(i)"
               ></button>
             }
@@ -420,8 +419,6 @@
             </svg>
           </button>
         </div>
-
-        <p class="results-counter">{{ resultIndex() + 1 }} / {{ transformations.length }}</p>
       </div>
     </section>
 
@@ -528,7 +525,8 @@
         <div>
           <h3 class="block-label">Online</h3>
           <p class="block-text">
-            Brasília, Goiás, SP, RJ e também Irlanda do Norte, Alemanha, Portugal e EUA.
+            Brasília, Goiás, SP, RJ, Bahia, Minas Gerais e também Irlanda do Norte, Alemanha,
+            Portugal e EUA.
           </p>
           <div class="online-tags">
             @for (region of onlineRegions; track region) {
