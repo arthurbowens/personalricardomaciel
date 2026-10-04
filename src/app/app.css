@@ -656,6 +656,15 @@
   margin-top: 3.5rem;
 }
 
+.transformations-hint {
+  margin: 0.85rem 0 0;
+  max-width: 32rem;
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: color-mix(in srgb, white 58%, transparent);
+}
+
 .transformations-title {
   margin: 0.35rem 0 0;
   font-family: "Bebas Neue", sans-serif;
@@ -666,6 +675,78 @@
 
 .results-carousel-wrap {
   margin-top: 1.5rem;
+}
+
+.transformations-carousel {
+  --trans-card-w: 16.5rem;
+
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
+  padding-bottom: 0.35rem;
+}
+
+.transformations-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.transformations-carousel:active {
+  cursor: grabbing;
+}
+
+@media (max-width: 599px) {
+  .transformations-carousel {
+    --trans-card-w: min(72vw, 16.5rem);
+  }
+}
+
+.transformation-card {
+  position: relative;
+  flex: 0 0 var(--trans-card-w);
+  width: var(--trans-card-w);
+  height: calc(var(--trans-card-w) * 1.25);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  border-radius: 0.85rem;
+  border: 1px solid color-mix(in srgb, white 12%, transparent);
+  background: #0a0a0a;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  transition: border-color 0.25s ease;
+}
+
+.transformation-card:hover {
+  border-color: color-mix(in srgb, var(--crimson) 45%, transparent);
+}
+
+.transformation-card app-before-after-slider {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.transformation-detail {
+  margin: 0;
+  padding: 0.55rem 0.75rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-align: center;
+  color: color-mix(in srgb, white 72%, transparent);
+  border-top: 1px solid color-mix(in srgb, white 8%, transparent);
+  background: color-mix(in srgb, white 3%, transparent);
 }
 
 .results-carousel {
@@ -834,6 +915,12 @@
 
   .result-slide {
     flex: 0 0 min(42%, 26rem);
+  }
+
+  .transformations-carousel {
+    --trans-card-w: 18rem;
+    gap: 1.15rem;
+    scroll-padding-inline: 0;
   }
 }
 
@@ -1435,3 +1522,4 @@
     transition: none !important;
   }
 }
+

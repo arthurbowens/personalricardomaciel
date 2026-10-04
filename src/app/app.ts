@@ -1,17 +1,15 @@
-import { Component, ElementRef, HostListener, signal, viewChild } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
+import { BeforeAfterSlider } from './before-after-slider/before-after-slider';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [BeforeAfterSlider],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   protected readonly menuOpen = signal(false);
   protected readonly scrolled = signal(false);
-  protected readonly resultIndex = signal(0);
-
-  private readonly resultsTrack = viewChild<ElementRef<HTMLElement>>('resultsTrack');
 
   private readonly whatsappNumber = '556192293029';
   private readonly whatsappMessage =
@@ -73,37 +71,17 @@ export class App {
     },
   ] as const;
 
-  protected readonly transformations = [
-    { id: 1, src: '/resultado1.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 2, src: '/resultado2.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 3, src: '/resultado3.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 4, src: '/resultado4.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 5, src: '/resultado5.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 6, src: '/resultado6.jpeg', alt: 'Mesmos 60 kg com redistribuição corporal em 30 dias', detail: '30 dias · mesmos 60 kg' },
-    { id: 7, src: '/resultado7.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 20, src: '/resultado20.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 8, src: '/resultado8.jpeg', alt: 'Aline: 4 meses de acompanhamento', detail: '4 meses de acompanhamento' },
-    { id: 9, src: '/resultado9.jpeg', alt: 'Aline: 4 meses de acompanhamento', detail: '4 meses de acompanhamento' },
-    { id: 13, src: '/resultado13.jpeg', alt: 'Aline: 4 meses de acompanhamento', detail: '4 meses de acompanhamento' },
-    { id: 14, src: '/resultado14.jpeg', alt: 'Aline: 4 meses de acompanhamento', detail: '4 meses de acompanhamento' },
-    { id: 15, src: '/resultado15.jpeg', alt: 'Aline: 4 meses de acompanhamento', detail: '4 meses de acompanhamento' },
-    { id: 12, src: '/resultado12.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    {
-      id: 16,
-      src: '/resultado16.jpeg',
-      alt: '10 meses: menos 27,6 kg, mais 1,7 kg de massa magra e menos 22,1% de gordura',
-      detail: '10 meses · -27,6 kg · +1,7 kg massa magra · -22,1% gordura',
-    },
-    { id: 17, src: '/resultado17.jpeg', alt: 'Transformação em 70 dias', detail: '70 dias' },
-    { id: 19, src: '/resultado19.jpeg', alt: 'Transformação em 90 dias', detail: 'Foram 90 dias' },
-    { id: 21, src: '/resultado21.jpeg', alt: 'Antes e depois de aluno', detail: '' },
-    { id: 22, src: '/resultado22.jpeg', alt: 'Transformação em 5 meses: 105 kg para 83 kg', detail: '5 meses · 105 kg a 83 kg' },
-    { id: 23, src: '/resultado23.jpeg', alt: 'Evolução da Geisielly em 90 dias', detail: '90 dias' },
-    { id: 24, src: '/resultado24.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 25, src: '/resultado25.jpeg', alt: 'Antes e depois de aluna', detail: '' },
-    { id: 26, src: '/resultado26.jpeg', alt: 'Antes e depois de aluno', detail: '' },
-    { id: 27, src: '/resultado27.jpeg', alt: 'Transformação da Jessica em 69 dias', detail: '69 dias' },
-  ];
+  /** Pares: resultado{N}antes.jpeg + resultado{N}dps.jpeg em /public (sem o 1) */
+  protected readonly transformations = Array.from({ length: 11 }, (_, index) => {
+    const n = index + 2;
+    return {
+      id: n,
+      antes: `/resultado${n}antes.jpeg`,
+      depois: `/resultado${n}dps.jpeg`,
+      alt: `Comparativo antes e depois · transformação de aluna`,
+      detail: '',
+    };
+  });
 
   protected readonly onlineRegions = [
     'Brasília',
@@ -194,16 +172,6 @@ export class App {
           alt: 'Antes e depois da aluna que enviou o feedback no WhatsApp',
           caption: 'Antes e depois',
         },
-        {
-          src: '/resultado2feedback1.jpeg',
-          alt: 'Foto de resultado da mesma aluna do feedback no WhatsApp',
-          caption: 'Resultado',
-        },
-        {
-          src: '/resultado19.jpeg',
-          alt: 'Antes e depois em perfil da mesma aluna em 90 dias',
-          caption: 'Foram 90 dias',
-        },
       ],
     },
     {
@@ -282,11 +250,6 @@ export class App {
       lead: 'Resultado em 69 dias, com os prints dela: perdeu gordura, manteve músculo e saiu do GG para o M.',
       slides: [
         {
-          src: '/resultado27.jpeg',
-          alt: 'Antes e depois da Jessica em 69 dias',
-          caption: '69 dias',
-        },
-        {
           src: '/depoimentojessica.jpeg',
           alt: 'Depoimento da Jessica: perdeu gordura, manteve músculo e saiu do GG para o M',
           caption: 'GG para M',
@@ -311,37 +274,5 @@ export class App {
 
   protected closeMenu(): void {
     this.menuOpen.set(false);
-  }
-
-  protected onResultsScroll(event: Event): void {
-    const track = event.target as HTMLElement;
-    const slide = track.querySelector('.result-slide') as HTMLElement | null;
-    if (!slide) return;
-    const style = getComputedStyle(track);
-    const gap = Number.parseFloat(style.columnGap || style.gap || '0') || 0;
-    const slideWidth = slide.getBoundingClientRect().width + gap;
-    if (slideWidth <= 0) return;
-    const index = Math.round(track.scrollLeft / slideWidth);
-    this.resultIndex.set(Math.max(0, Math.min(index, this.transformations.length - 1)));
-  }
-
-  protected goToResult(index: number): void {
-    const track = this.resultsTrack()?.nativeElement;
-    if (!track) return;
-    const slide = track.children[index] as HTMLElement | undefined;
-    if (!slide) return;
-    const trackRect = track.getBoundingClientRect();
-    const slideRect = slide.getBoundingClientRect();
-    const left = track.scrollLeft + (slideRect.left - trackRect.left);
-    track.scrollTo({ left, behavior: 'smooth' });
-    this.resultIndex.set(index);
-  }
-
-  protected nextResult(): void {
-    this.goToResult(Math.min(this.resultIndex() + 1, this.transformations.length - 1));
-  }
-
-  protected prevResult(): void {
-    this.goToResult(Math.max(this.resultIndex() - 1, 0));
   }
 }

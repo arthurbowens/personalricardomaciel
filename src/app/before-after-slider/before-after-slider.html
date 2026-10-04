@@ -1,0 +1,45 @@
+<div
+  #root
+  class="ba"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerUp($event)"
+  [attr.aria-label]="alt()"
+>
+  <div class="ba__frame" #frame>
+    <img
+      class="ba__img ba__img--after"
+      [src]="afterSrc()"
+      alt=""
+      aria-hidden="true"
+      draggable="false"
+      loading="lazy"
+      decoding="async"
+      (load)="syncFrameSize()"
+    />
+    <div class="ba__clip" [style.width.%]="position()">
+      <div class="ba__clip-inner">
+        <img
+          class="ba__img ba__img--before"
+          [src]="beforeSrc()"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+          loading="lazy"
+          decoding="async"
+          (load)="syncFrameSize()"
+        />
+      </div>
+    </div>
+
+    <div class="ba__divider" [style.left.%]="position()" aria-hidden="true">
+      <span class="ba__handle" aria-hidden="true">
+        <svg class="ba__handle-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <polygon fill="currentColor" points="10,7 6,12 10,17" />
+          <polygon fill="currentColor" points="14,7 18,12 14,17" />
+        </svg>
+      </span>
+    </div>
+  </div>
+</div>
