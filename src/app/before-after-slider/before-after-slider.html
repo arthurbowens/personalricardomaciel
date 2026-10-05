@@ -1,12 +1,4 @@
-<div
-  #root
-  class="ba"
-  (pointerdown)="onPointerDown($event)"
-  (pointermove)="onPointerMove($event)"
-  (pointerup)="onPointerUp($event)"
-  (pointercancel)="onPointerUp($event)"
-  [attr.aria-label]="alt()"
->
+<div class="ba" [attr.aria-label]="alt()">
   <div class="ba__frame" #frame>
     <img
       class="ba__img ba__img--after"
@@ -41,5 +33,16 @@
         </svg>
       </span>
     </div>
+
+    <input
+      class="ba__range"
+      type="range"
+      min="0"
+      max="100"
+      step="0.5"
+      [value]="position()"
+      [attr.aria-label]="alt()"
+      (input)="onRangeInput($event)"
+    />
   </div>
 </div>

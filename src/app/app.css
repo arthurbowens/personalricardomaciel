@@ -682,26 +682,26 @@
 }
 
 .transformations-viewport {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.transformations-track {
   display: flex;
   align-items: stretch;
   gap: 0.85rem;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 1.25rem;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  padding-bottom: 0.35rem;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
-.transformations-viewport::-webkit-scrollbar {
-  display: none;
+.transformations-nav {
+  margin-top: 1.25rem;
 }
 
 .transformations-counter {
-  margin: 1rem 0 0;
+  margin: 0;
+  min-width: 7.5rem;
   text-align: center;
 }
 
@@ -711,8 +711,6 @@
   flex-direction: column;
   flex: 0 0 min(86vw, 17.5rem);
   width: min(86vw, 17.5rem);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   overflow: hidden;
   border-radius: 0.85rem;
   border: 1px solid color-mix(in srgb, white 12%, transparent);
@@ -900,9 +898,8 @@
     flex: 0 0 min(42%, 26rem);
   }
 
-  .transformations-viewport {
+  .transformations-track {
     gap: 1rem;
-    scroll-padding-inline: 0;
   }
 
   .transformation-card {

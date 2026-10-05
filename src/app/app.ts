@@ -93,9 +93,18 @@ export class App {
 
   protected readonly transformationIndex = signal(0);
   protected readonly transformationSlidesPerView = signal(1);
+  protected readonly transformationSlideStepPx = signal(0);
 
-  private readonly transformViewport =
-    viewChild<ElementRef<HTMLElement>>('transformViewport');
+  private readonly transformTrack = viewChild<ElementRef<HTMLElement>>('transformTrack');
+  private trackResizeObserver?: ResizeObserver;
+
+  protected readonly maxTransformationIndex = computed(() =>
+    Math.max(0, this.transformations.length - this.transformationSlidesPerView()),
+  );
+
+  protected readonly transformationAtEnd = computed(
+    () => this.transformationIndex() >= this.maxTransformationIndex(),
+  );
 
   protected readonly transformationRangeEnd = computed(() =>
     Math.min(
@@ -104,33 +113,54 @@ export class App {
     ),
   );
 
+  protected readonly transformationTrackTransform = computed(() => {
+    const step = this.transformationSlideStepPx();
+    const index = this.transformationIndex();
+    if (step <= 0) return 'translate3d(0, 0, 0)';
+    return `translate3d(-${index * step}px, 0, 0)`;
+  });
+
   constructor() {
     afterNextRender(() => {
       const mq = window.matchMedia('(min-width: 900px)');
-      const syncSlidesPerView = (): void => {
-        this.transformationSlidesPerView.set(mq.matches ? 3 : 1);
-        this.onTransformationsScroll();
+      const syncLayout = (): void => {
+        const perView = mq.matches ? 3 : 1;
+        this.transformationSlidesPerView.set(perView);
+        this.transformationIndex.update((index) =>
+          Math.min(index, Math.max(0, this.transformations.length - perView)),
+        );
+        this.measureTransformationSlideStep();
       };
-      syncSlidesPerView();
-      mq.addEventListener('change', syncSlidesPerView);
+
+      syncLayout();
+      mq.addEventListener('change', syncLayout);
+
+      const track = this.transformTrack()?.nativeElement;
+      if (track) {
+        this.trackResizeObserver = new ResizeObserver(() => this.measureTransformationSlideStep());
+        this.trackResizeObserver.observe(track);
+      }
     });
   }
 
-  protected onTransformationsScroll(): void {
-    const viewport = this.transformViewport()?.nativeElement;
-    if (!viewport) return;
+  protected prevTransformation(): void {
+    this.transformationIndex.update((index) => Math.max(0, index - 1));
+  }
 
-    const card = viewport.querySelector('.transformation-card') as HTMLElement | null;
+  protected nextTransformation(): void {
+    this.transformationIndex.update((index) => Math.min(this.maxTransformationIndex(), index + 1));
+  }
+
+  private measureTransformationSlideStep(): void {
+    const track = this.transformTrack()?.nativeElement;
+    if (!track) return;
+
+    const card = track.querySelector('.transformation-card') as HTMLElement | null;
     if (!card) return;
 
-    const style = getComputedStyle(viewport);
-    const gap = Number.parseFloat(style.columnGap || style.gap || '0') || 0;
+    const gap = Number.parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0') || 0;
     const step = card.offsetWidth + gap;
-    if (step <= 0) return;
-
-    const index = Math.round(viewport.scrollLeft / step);
-    const maxIndex = Math.max(0, this.transformations.length - 1);
-    this.transformationIndex.set(Math.max(0, Math.min(index, maxIndex)));
+    if (step > 0) this.transformationSlideStepPx.set(step);
   }
 
   protected readonly onlineRegions = [

@@ -336,32 +336,72 @@
         <p class="section-label">Transformações reais</p>
         <h3 class="transformations-title">Resultados das alunas</h3>
         <p class="transformations-hint">
-          {{ transformations.length }} comparativos reais. Deslize para o lado para ver mais. Na
-          foto, arraste na horizontal para comparar antes e depois.
+          {{ transformations.length }} comparativos reais. Use as setas para ver mais. Na foto,
+          arraste o círculo vermelho (ou toque e deslize) para comparar antes e depois.
         </p>
       </div>
 
       <div class="transformations-shell" role="region" aria-label="Comparativos antes e depois">
-        <div
-          #transformViewport
-          class="transformations-viewport"
-          (scroll)="onTransformationsScroll()"
-        >
-          @for (item of transformations; track item.id) {
-            <article class="transformation-card">
-              <app-before-after-slider
-                [beforeSrc]="item.antes"
-                [afterSrc]="item.depois"
-                [alt]="item.alt"
-              />
-            </article>
-          }
+        <div class="transformations-viewport">
+          <div
+            #transformTrack
+            class="transformations-track"
+            [style.transform]="transformationTrackTransform()"
+          >
+            @for (item of transformations; track item.id) {
+              <article class="transformation-card">
+                <app-before-after-slider
+                  [beforeSrc]="item.antes"
+                  [afterSrc]="item.depois"
+                  [alt]="item.alt"
+                />
+              </article>
+            }
+          </div>
         </div>
 
-        <p class="results-counter transformations-counter">
-          {{ transformationIndex() + 1 }}–{{ transformationRangeEnd() }} de
-          {{ transformations.length }}
-        </p>
+        <div class="results-controls transformations-nav">
+          <button
+            type="button"
+            class="results-arrow"
+            aria-label="Resultado anterior"
+            [disabled]="transformationIndex() === 0"
+            (click)="prevTransformation()"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M15 18l-6-6 6-6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
+          <p class="results-counter transformations-counter">
+            {{ transformationIndex() + 1 }}–{{ transformationRangeEnd() }} de
+            {{ transformations.length }}
+          </p>
+
+          <button
+            type="button"
+            class="results-arrow"
+            aria-label="Próximo resultado"
+            [disabled]="transformationAtEnd()"
+            (click)="nextTransformation()"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M9 18l6-6-6-6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
 
