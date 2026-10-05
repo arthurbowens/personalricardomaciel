@@ -1,4 +1,12 @@
-import { Component, HostListener, signal } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { BeforeAfterSlider } from './before-after-slider/before-after-slider';
 
 @Component({
@@ -82,6 +90,48 @@ export class App {
     depois: `/resultado${n}dps.jpeg`,
     alt: `Comparativo antes e depois · transformação de aluna`,
   }));
+
+  protected readonly transformationIndex = signal(0);
+  protected readonly transformationSlidesPerView = signal(1);
+
+  private readonly transformViewport =
+    viewChild<ElementRef<HTMLElement>>('transformViewport');
+
+  protected readonly transformationRangeEnd = computed(() =>
+    Math.min(
+      this.transformations.length,
+      this.transformationIndex() + this.transformationSlidesPerView(),
+    ),
+  );
+
+  constructor() {
+    afterNextRender(() => {
+      const mq = window.matchMedia('(min-width: 900px)');
+      const syncSlidesPerView = (): void => {
+        this.transformationSlidesPerView.set(mq.matches ? 3 : 1);
+        this.onTransformationsScroll();
+      };
+      syncSlidesPerView();
+      mq.addEventListener('change', syncSlidesPerView);
+    });
+  }
+
+  protected onTransformationsScroll(): void {
+    const viewport = this.transformViewport()?.nativeElement;
+    if (!viewport) return;
+
+    const card = viewport.querySelector('.transformation-card') as HTMLElement | null;
+    if (!card) return;
+
+    const style = getComputedStyle(viewport);
+    const gap = Number.parseFloat(style.columnGap || style.gap || '0') || 0;
+    const step = card.offsetWidth + gap;
+    if (step <= 0) return;
+
+    const index = Math.round(viewport.scrollLeft / step);
+    const maxIndex = Math.max(0, this.transformations.length - 1);
+    this.transformationIndex.set(Math.max(0, Math.min(index, maxIndex)));
+  }
 
   protected readonly onlineRegions = [
     'Brasília',

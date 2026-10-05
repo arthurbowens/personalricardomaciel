@@ -8,6 +8,8 @@ import {
   viewChild,
 } from '@angular/core';
 
+type DragPhase = 'idle' | 'pending' | 'dragging';
+
 @Component({
   selector: 'app-before-after-slider',
   imports: [],
@@ -21,16 +23,19 @@ export class BeforeAfterSlider implements OnDestroy {
 
   protected readonly position = signal(50);
 
-  private dragging = false;
+  private phase: DragPhase = 'idle';
+  private activePointerId: number | null = null;
+  private startX = 0;
+  private startY = 0;
+
   private readonly root = viewChild<ElementRef<HTMLElement>>('root');
   private readonly frame = viewChild<ElementRef<HTMLElement>>('frame');
   private resizeObserver?: ResizeObserver;
-  private narrowMq?: MediaQueryList;
-  private readonly onNarrowChange = (): void => {
-    this.narrowViewport.set(this.narrowMq?.matches ?? false);
-  };
 
-  protected readonly narrowViewport = signal(false);
+  private readonly onGlobalPointerEnd = (event: PointerEvent): void => {
+    if (this.activePointerId !== null && event.pointerId !== this.activePointerId) return;
+    this.endDrag();
+  };
 
   constructor() {
     afterNextRender(() => {
@@ -40,15 +45,15 @@ export class BeforeAfterSlider implements OnDestroy {
       this.resizeObserver = new ResizeObserver(() => this.syncFrameSize());
       this.resizeObserver.observe(el);
 
-      this.narrowMq = window.matchMedia('(max-width: 767px)');
-      this.onNarrowChange();
-      this.narrowMq.addEventListener('change', this.onNarrowChange);
+      window.addEventListener('pointerup', this.onGlobalPointerEnd);
+      window.addEventListener('pointercancel', this.onGlobalPointerEnd);
     });
   }
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
-    this.narrowMq?.removeEventListener('change', this.onNarrowChange);
+    window.removeEventListener('pointerup', this.onGlobalPointerEnd);
+    window.removeEventListener('pointercancel', this.onGlobalPointerEnd);
   }
 
   protected syncFrameSize(): void {
@@ -59,29 +64,56 @@ export class BeforeAfterSlider implements OnDestroy {
 
   protected onPointerDown(event: PointerEvent): void {
     if (event.button !== 0) return;
-    if (this.narrowViewport() && !this.isCompareControl(event.target)) {
-      return;
-    }
-    event.stopPropagation();
-    const el = this.root()?.nativeElement;
-    if (!el) return;
-    el.setPointerCapture(event.pointerId);
-    this.dragging = true;
-    this.setPositionFromEvent(event, el);
+    if (this.phase !== 'idle') return;
+
+    this.phase = 'pending';
+    this.activePointerId = event.pointerId;
+    this.startX = event.clientX;
+    this.startY = event.clientY;
   }
 
   protected onPointerMove(event: PointerEvent): void {
-    if (!this.dragging) return;
-    event.stopPropagation();
+    if (this.activePointerId !== event.pointerId) return;
+
     const el = this.root()?.nativeElement;
     if (!el) return;
+
+    if (this.phase === 'pending') {
+      const dx = event.clientX - this.startX;
+      const dy = event.clientY - this.startY;
+      if (Math.hypot(dx, dy) < 6) return;
+
+      if (Math.abs(dx) <= Math.abs(dy) * 1.1) {
+        this.endDrag();
+        return;
+      }
+
+      this.phase = 'dragging';
+      el.setPointerCapture(event.pointerId);
+      el.classList.add('ba--dragging');
+      event.preventDefault();
+      this.setPositionFromEvent(event, el);
+      return;
+    }
+
+    if (this.phase !== 'dragging') return;
+    event.preventDefault();
     this.setPositionFromEvent(event, el);
   }
 
   protected onPointerUp(event: PointerEvent): void {
-    if (!this.dragging) return;
-    this.dragging = false;
-    this.root()?.nativeElement.releasePointerCapture(event.pointerId);
+    if (this.activePointerId !== event.pointerId) return;
+    this.endDrag();
+  }
+
+  private endDrag(): void {
+    const el = this.root()?.nativeElement;
+    if (el && this.activePointerId !== null && el.hasPointerCapture(this.activePointerId)) {
+      el.releasePointerCapture(this.activePointerId);
+    }
+    el?.classList.remove('ba--dragging');
+    this.phase = 'idle';
+    this.activePointerId = null;
   }
 
   private setPositionFromEvent(event: PointerEvent, el: HTMLElement): void {
@@ -90,9 +122,5 @@ export class BeforeAfterSlider implements OnDestroy {
     const x = event.clientX - rect.left;
     const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
     this.position.set(pct);
-  }
-
-  private isCompareControl(target: EventTarget | null): boolean {
-    return target instanceof Element && !!target.closest('.ba__divider');
   }
 }
