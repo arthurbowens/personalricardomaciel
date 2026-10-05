@@ -81,7 +81,6 @@ export class App {
     antes: `/resultado${n}antes.jpeg`,
     depois: `/resultado${n}dps.jpeg`,
     alt: `Comparativo antes e depois · transformação de aluna`,
-    detail: n === 16 ? '10 meses · -27,6 kg · +1,7 kg massa magra · -22,1% gordura' : '',
   }));
 
   protected readonly onlineRegions = [
