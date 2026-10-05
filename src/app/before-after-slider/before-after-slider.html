@@ -1,6 +1,7 @@
 <div
   #root
   class="ba"
+  [class.ba--narrow]="narrowViewport()"
   (pointerdown)="onPointerDown($event)"
   (pointermove)="onPointerMove($event)"
   (pointerup)="onPointerUp($event)"

@@ -71,17 +71,18 @@ export class App {
     },
   ] as const;
 
-  /** Pares: resultado{N}antes.jpeg + resultado{N}dps.jpeg em /public (sem o 1) */
-  protected readonly transformations = Array.from({ length: 11 }, (_, index) => {
-    const n = index + 2;
-    return {
-      id: n,
-      antes: `/resultado${n}antes.jpeg`,
-      depois: `/resultado${n}dps.jpeg`,
-      alt: `Comparativo antes e depois · transformação de aluna`,
-      detail: '',
-    };
-  });
+  /** Pares resultado{N}antes + resultado{N}dps em /public. Ordem: 16 primeiro, sem o 1. */
+  private static readonly transformationOrder = [
+    16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+  ] as const;
+
+  protected readonly transformations = App.transformationOrder.map((n) => ({
+    id: n,
+    antes: `/resultado${n}antes.jpeg`,
+    depois: `/resultado${n}dps.jpeg`,
+    alt: `Comparativo antes e depois · transformação de aluna`,
+    detail: n === 16 ? '10 meses · -27,6 kg · +1,7 kg massa magra · -22,1% gordura' : '',
+  }));
 
   protected readonly onlineRegions = [
     'Brasília',
@@ -123,6 +124,7 @@ export class App {
     { name: 'Mensal', detail: 'Flexibilidade para começar agora' },
     { name: 'Bimestral', detail: 'Ritmo e acompanhamento contínuo' },
     { name: 'Trimestral', detail: 'Evolução com mais consistência' },
+    { name: 'Semestral', detail: 'Seis meses com foco no objetivo' },
     { name: 'Anual', detail: 'Compromisso total com a transformação' },
   ] as const;
 

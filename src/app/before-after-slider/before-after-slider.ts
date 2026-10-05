@@ -25,6 +25,12 @@ export class BeforeAfterSlider implements OnDestroy {
   private readonly root = viewChild<ElementRef<HTMLElement>>('root');
   private readonly frame = viewChild<ElementRef<HTMLElement>>('frame');
   private resizeObserver?: ResizeObserver;
+  private narrowMq?: MediaQueryList;
+  private readonly onNarrowChange = (): void => {
+    this.narrowViewport.set(this.narrowMq?.matches ?? false);
+  };
+
+  protected readonly narrowViewport = signal(false);
 
   constructor() {
     afterNextRender(() => {
@@ -33,11 +39,16 @@ export class BeforeAfterSlider implements OnDestroy {
       this.syncFrameSize();
       this.resizeObserver = new ResizeObserver(() => this.syncFrameSize());
       this.resizeObserver.observe(el);
+
+      this.narrowMq = window.matchMedia('(max-width: 767px)');
+      this.onNarrowChange();
+      this.narrowMq.addEventListener('change', this.onNarrowChange);
     });
   }
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
+    this.narrowMq?.removeEventListener('change', this.onNarrowChange);
   }
 
   protected syncFrameSize(): void {
@@ -48,6 +59,9 @@ export class BeforeAfterSlider implements OnDestroy {
 
   protected onPointerDown(event: PointerEvent): void {
     if (event.button !== 0) return;
+    if (this.narrowViewport() && !this.isCompareControl(event.target)) {
+      return;
+    }
     event.stopPropagation();
     const el = this.root()?.nativeElement;
     if (!el) return;
@@ -76,5 +90,9 @@ export class BeforeAfterSlider implements OnDestroy {
     const x = event.clientX - rect.left;
     const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
     this.position.set(pct);
+  }
+
+  private isCompareControl(target: EventTarget | null): boolean {
+    return target instanceof Element && !!target.closest('.ba__divider');
   }
 }

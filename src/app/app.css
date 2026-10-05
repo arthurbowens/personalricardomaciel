@@ -704,17 +704,33 @@
   cursor: grabbing;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 767px) {
   .transformations-carousel {
-    --trans-card-w: min(72vw, 16.5rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    overflow: visible;
+    scroll-snap-type: none;
+    cursor: default;
+    padding-bottom: 0;
+    --trans-card-w: min(100%, 18rem);
+  }
+
+  .transformations-carousel:active {
+    cursor: default;
+  }
+
+  .transformation-card {
+    margin-inline: auto;
   }
 }
 
 .transformation-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   flex: 0 0 var(--trans-card-w);
   width: var(--trans-card-w);
-  height: calc(var(--trans-card-w) * 1.25);
   scroll-snap-align: start;
   scroll-snap-stop: always;
   overflow: hidden;
@@ -732,7 +748,8 @@
 .transformation-card app-before-after-slider {
   display: block;
   width: 100%;
-  height: 100%;
+  height: calc(var(--trans-card-w) * 1.25);
+  flex-shrink: 0;
   border-radius: inherit;
 }
 
@@ -1394,7 +1411,7 @@
 
 @media (min-width: 800px) {
   .plans-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
   }
 
   .plan {
